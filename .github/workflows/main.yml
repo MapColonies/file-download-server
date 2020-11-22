@@ -5,12 +5,7 @@ on: [pull_request]
 jobs:
 
   build_and_test:
-    runs-on: ubuntu-latest
-    
-    strategy:
-      matrix:
-        node-version: [12.x]
-        
+    runs-on: ubuntu-latest        
     steps:
     - name: Checkout
       uses: actions/checkout@v2
