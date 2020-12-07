@@ -5,6 +5,7 @@ RUN mkdir /usr/share/nginx/html/downloads
 # ownloadable content should be mounted to downloads
 COPY downloads.conf /etc/nginx/conf.d/downloads.confe
 COPY health.html /usr/share/nginx/html/health.html
+
 RUN sed -i 's/listen       80;/listen       8080;/g' /etc/nginx/conf.d/default.conf  && \
   sed -i '/user  nginx;/d' /etc/nginx/nginx.conf && \
   sed -i 's,/var/run/nginx.pid,/tmp/nginx.pid,' /etc/nginx/nginx.conf && \ 
