@@ -1,4 +1,4 @@
-FROM nginx:1.19.1-alpine
+FROM nginx:alpine
 RUN rm /usr/share/nginx/html/index.html
 RUN mkdir /usr/share/nginx/html/downloads
 # downloadable content should be mounted to downloads
