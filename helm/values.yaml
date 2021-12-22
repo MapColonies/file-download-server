@@ -43,6 +43,7 @@ resources:
 route:
   enabled: false
   path: /
+  tls: true
 
 ingress:
   enabled: false
