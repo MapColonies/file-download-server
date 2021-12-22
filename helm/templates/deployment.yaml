@@ -1,10 +1,10 @@
 
 {{- $releaseName := .Release.Name -}}
-{{- $chartName := include "file-downloader-server.name" . -}}
-{{- $cloudProviderFlavor := include "file-downloader-server.cloudProviderFlavor" . -}}
-{{- $cloudProviderDockerRegistryUrl := include "file-downloader-server.cloudProviderDockerRegistryUrl" . -}}
-{{- $cloudProviderImagePullSecretName := include "file-downloader-server.cloudProviderImagePullSecretName" . -}}
-{{- $imageTag := include "file-downloader-server.tag" . -}}
+{{- $chartName := include "file-download-server.name" . -}}
+{{- $cloudProviderFlavor := include "file-download-server.cloudProviderFlavor" . -}}
+{{- $cloudProviderDockerRegistryUrl := include "file-download-server.cloudProviderDockerRegistryUrl" . -}}
+{{- $cloudProviderImagePullSecretName := include "file-download-server.cloudProviderImagePullSecretName" . -}}
+{{- $imageTag := include "file-download-server.tag" . -}}
 
 {{- if .Values.enabled -}}
 apiVersion: apps/v1
@@ -16,9 +16,9 @@ metadata:
   labels:
     app: {{ $chartName }}
     component: {{ $chartName }}
-    environment: {{ include "file-downloader-server.environment" . }}
+    environment: {{ include "file-download-server.environment" . }}
     release: {{ $releaseName }}
-    {{- include "file-downloader-server.labels" . | nindent 4 }}
+    {{- include "file-download-server.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -26,14 +26,14 @@ spec:
       app: {{ $chartName }}
       release: {{ $releaseName }}
       run: {{ $releaseName }}-{{ $chartName }}
-      {{- include "file-downloader-server.selectorLabels" . | nindent 6 }}
+      {{- include "file-download-server.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
         app: {{ $chartName }}
         release: {{ $releaseName }}
         run: {{ $releaseName }}-{{ $chartName }}
-        {{- include "file-downloader-server.selectorLabels" . | nindent 8 }}
+        {{- include "file-download-server.selectorLabels" . | nindent 8 }}
     spec:
     {{- if $cloudProviderImagePullSecretName }}
       imagePullSecrets:
@@ -45,7 +45,7 @@ spec:
           claimName: {{ .Values.storage.internalPvc.name }} 
       - name: nginx-downloads-config
         configMap:
-          name: {{ template "file-downloader-server.fullname" . }}-configmap
+          name: {{ template "file-download-server.fullname" . }}-configmap
           items:
           - key: "NGINX_DOWNLOADS_CONFIG"
             path: "downloads.conf"
