@@ -16,7 +16,7 @@ cloudProvider:
   flavor: openshift
 
 image:
-  repository: mfile-download-server
+  repository: file-download-server
   tag: latest
 storage:
   pv: # for local use only
