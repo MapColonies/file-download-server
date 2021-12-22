@@ -4,6 +4,7 @@
 {{- $cloudProviderFlavor := include "file-downloader-server.cloudProviderFlavor" . -}}
 {{- $cloudProviderDockerRegistryUrl := include "file-downloader-server.cloudProviderDockerRegistryUrl" . -}}
 {{- $cloudProviderImagePullSecretName := include "file-downloader-server.cloudProviderImagePullSecretName" . -}}
+{{- $imageTag := include "file-downloader-server.tag" . -}}
 
 {{- if .Values.enabled -}}
 apiVersion: apps/v1
@@ -45,11 +46,7 @@ spec:
       containers:
         - name: {{ $releaseName }}-{{ $chartName }}-deployment
           {{- with .Values.image }}
-          {{- if ne $cloudProviderFlavor "minikube" }}
-          image: {{ $cloudProviderDockerRegistryUrl }}/{{ .repository }}:{{ .tag }}
-          {{- else }}
-          image: {{ .repository }}:{{ .tag }}
-          {{- end }}
+          image: {{ $cloudProviderDockerRegistryUrl }}{{ .repository }}:{{ $imageTag }}
           {{- end }}
           ports:
             - name: http
