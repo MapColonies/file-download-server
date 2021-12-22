@@ -15,7 +15,7 @@ metadata:
 spec:
 {{- if eq $cloudProviderFlavor "minikube" }}
   type: NodePort
-    30020{{- end }}
+    {{- end }}
   ports:
     - port: {{ .Values.env.port }}
       targetPort: {{ .Values.env.targetPort }}

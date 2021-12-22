@@ -16,21 +16,14 @@ cloudProvider:
   flavor: openshift
 
 image:
-  repository: mc-file-download-server
-  tag: V1.0.0-3-gce917d7
+  repository: mfile-download-server
+  tag: latest
 storage:
-  accessModes: ReadWriteOnce
-  storageSize: 5Gi
-  storageClass: azure-file
-  pv:
+  pv: # for local use only
     enabled: false
     hostPath: /raster/gpkgs
   internalPvc:
-    enabled: false
     name: internal-pvc
-  gpkgsPvc:
-    enabled: false
-    name: gpkgs-storage
 
 env:
   port: 80
