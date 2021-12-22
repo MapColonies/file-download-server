@@ -11,8 +11,8 @@ initialDelaySeconds: 30
 nodePort: 30030 #for minikube deployment only
 splunkIndex: ""
 cloudProvider:
-  dockerRegistryUrl: acrarolibotnonprod.azurecr.io
-  imagePullSecretName: acr-registry
+  dockerRegistryUrl: my-registry-url.io
+  imagePullSecretName: pullSecretName
   flavor: openshift
 
 image:
