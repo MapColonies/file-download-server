@@ -61,8 +61,8 @@ spec:
           livenessProbe:
             initialDelaySeconds: {{ .Values.initialDelaySeconds }}
             httpGet:
-              path: /health.html
-              port: {{ .Values.env.targetPort }}
+              path: /nginx_status
+              port: 8081
           volumeMounts:
             - name: internal-storage 
               mountPath: /usr/share/nginx/html/downloads 
@@ -75,5 +75,8 @@ spec:
           resources:
             {{- toYaml .Values.resources.value | nindent 12 }}
           {{- end }}
+          env:
+            - name: NGINX_HOLERA
+              value: "TFU"
 {{- end -}}
 
