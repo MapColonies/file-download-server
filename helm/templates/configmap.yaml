@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "file-downloader-server.fullname" . }}-configmap
+  name: {{ template "file-download-server.fullname" . }}-configmap
   labels:
-    app: {{ template "file-downloader-server.name" . }}
-    component: file-downloader-server-configmap
+    app: {{ template "file-download-server.name" . }}
+    component: file-download-server-configmap
     environment: {{ .Values.environment }}
     release: {{ .Release.Name }}
 data:
