@@ -5,6 +5,8 @@
 {{- $cloudProviderDockerRegistryUrl := include "file-download-server.cloudProviderDockerRegistryUrl" . -}}
 {{- $cloudProviderImagePullSecretName := include "file-download-server.cloudProviderImagePullSecretName" . -}}
 {{- $imageTag := include "file-download-server.tag" . -}}
+{{- $tracingUrl := include "file-download-server.tracingUrl" . -}}
+
 
 {{- if .Values.enabled -}}
 apiVersion: apps/v1
@@ -53,6 +55,9 @@ spec:
         - name: {{ $releaseName }}-{{ $chartName }}-deployment
           {{- with .Values.image }}
           image: {{ $cloudProviderDockerRegistryUrl }}{{ .repository }}:{{ $imageTag }}
+          env:
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ $tracingUrl }}
           {{- end }}
           ports:
             - name: http

@@ -29,7 +29,8 @@ env:
   port: 80
   targetPort: 8080
   protocol: TCP
-  
+  tracing:
+    url: http://localhost:55681/v1/trace
 resources:
   enabled: true
   value:
