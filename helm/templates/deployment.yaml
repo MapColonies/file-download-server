@@ -51,12 +51,6 @@ spec:
           items:
           - key: "NGINX_DOWNLOADS_CONFIG"
             path: "downloads.conf"
-      - name: nginx-health-page
-        configMap:
-          name: {{ template "file-download-server.fullname" . }}-configmap
-          items:
-          - key: "NGINX_HEALTH_PAGE"
-            path: "health.html"
       containers:
         - name: {{ $releaseName }}-{{ $chartName }}-deployment
           {{- with .Values.image }}
@@ -72,8 +66,8 @@ spec:
           livenessProbe:
             initialDelaySeconds: {{ .Values.initialDelaySeconds }}
             httpGet:
-              path: /health.html
-              port: 8080
+              path: /nginx_status
+              port: 8081
           volumeMounts:
             - name: gpkgs-storage
               mountPath: /usr/share/nginx/html/downloads 
@@ -81,10 +75,6 @@ spec:
             - mountPath: "/etc/nginx/conf.d/downloads.conf"
               name: nginx-downloads-config
               subPath: downloads.conf
-              readOnly: true
-            - mountPath: "/usr/share/nginx/html/health.html"
-              name: nginx-health-page
-              subPath: health.html
               readOnly: true
           {{- if .Values.resources.enabled }}
           resources:
