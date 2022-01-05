@@ -10,4 +10,5 @@ metadata:
     release: {{ .Release.Name }}
 data:
   NGINX_DOWNLOADS_CONFIG: {{ .Files.Get "config/downloads.conf" | quote }}
+  NGINX_HEALTH_PAGE: {{ .Files.Get "config/health.html" | quote }}
 {{- end }}

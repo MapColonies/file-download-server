@@ -42,15 +42,21 @@ spec:
         - name: {{ $cloudProviderImagePullSecretName | quote }}
     {{- end }}
       volumes:
-      - name: internal-storage
+      - name: gpkgs-storage
         persistentVolumeClaim:
-          claimName: {{ .Values.storage.internalPvc.name }} 
+          claimName: {{ .Values.storage.gpkgsPvc.name }} 
       - name: nginx-downloads-config
         configMap:
           name: {{ template "file-download-server.fullname" . }}-configmap
           items:
           - key: "NGINX_DOWNLOADS_CONFIG"
             path: "downloads.conf"
+      - name: nginx-health-page
+        configMap:
+          name: {{ template "file-download-server.fullname" . }}-configmap
+          items:
+          - key: "NGINX_HEALTH_PAGE"
+            path: "health.html"
       containers:
         - name: {{ $releaseName }}-{{ $chartName }}-deployment
           {{- with .Values.image }}
@@ -66,15 +72,19 @@ spec:
           livenessProbe:
             initialDelaySeconds: {{ .Values.initialDelaySeconds }}
             httpGet:
-              path: /nginx_status
-              port: 8081
+              path: /health.html
+              port: 8080
           volumeMounts:
-            - name: internal-storage 
+            - name: gpkgs-storage
               mountPath: /usr/share/nginx/html/downloads 
               subPath: gpkgs
             - mountPath: "/etc/nginx/conf.d/downloads.conf"
               name: nginx-downloads-config
               subPath: downloads.conf
+              readOnly: true
+            - mountPath: "/usr/share/nginx/html/health.html"
+              name: nginx-health-page
+              subPath: health.html
               readOnly: true
           {{- if .Values.resources.enabled }}
           resources:
