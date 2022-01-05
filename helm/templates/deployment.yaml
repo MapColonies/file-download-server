@@ -42,9 +42,9 @@ spec:
         - name: {{ $cloudProviderImagePullSecretName | quote }}
     {{- end }}
       volumes:
-      - name: internal-storage
+      - name: gpkgs-storage
         persistentVolumeClaim:
-          claimName: {{ .Values.storage.internalPvc.name }} 
+          claimName: {{ .Values.storage.gpkgsPvc.name }} 
       - name: nginx-downloads-config
         configMap:
           name: {{ template "file-download-server.fullname" . }}-configmap
@@ -69,7 +69,7 @@ spec:
               path: /nginx_status
               port: 8081
           volumeMounts:
-            - name: internal-storage 
+            - name: gpkgs-storage
               mountPath: /usr/share/nginx/html/downloads 
               subPath: gpkgs
             - mountPath: "/etc/nginx/conf.d/downloads.conf"

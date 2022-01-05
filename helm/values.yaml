@@ -22,8 +22,8 @@ storage:
   pv: # for local use only
     enabled: false
     hostPath: /raster/gpkgs
-  internalPvc:
-    name: internal-pvc
+  gpkgsPvc:
+    name: gpkgs-storage
 
 env:
   port: 80
