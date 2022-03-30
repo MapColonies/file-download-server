@@ -9,21 +9,25 @@ environment: development
 replicaCount: 1
 initialDelaySeconds: 30
 nodePort: 30030 #for minikube deployment only
+resetOnConfigChange: true
 splunkIndex: ""
 cloudProvider:
   dockerRegistryUrl: my-registry-url.io
   imagePullSecretName: pullSecretName
   flavor: openshift
 
+rasterCommon:
+  storage:
+    fs:
+      gpkgsPvc:
+        enabled: true
+        name: gpkgs-storage
+        subPath: gpkgs
+  storageProvider: FS
+
 image:
   repository: file-download-server
   tag: latest
-storage:
-  pv: # for local use only
-    enabled: false
-    hostPath: /raster/gpkgs
-  gpkgsPvc:
-    name: gpkgs-storage
 
 env:
   port: 80

@@ -36,15 +36,21 @@ spec:
         release: {{ $releaseName }}
         run: {{ $releaseName }}-{{ $chartName }}
         {{- include "file-download-server.selectorLabels" . | nindent 8 }}
+      {{- if .Values.resetOnConfigChange }}
+      annotations:
+        checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      {{- end }}        
     spec:
     {{- if $cloudProviderImagePullSecretName }}
       imagePullSecrets:
         - name: {{ $cloudProviderImagePullSecretName | quote }}
     {{- end }}
       volumes:
+      {{- if .Values.rasterCommon.storage.fs.gpkgsPvc.enabled }}
       - name: gpkgs-storage
         persistentVolumeClaim:
-          claimName: {{ .Values.storage.gpkgsPvc.name }} 
+          claimName: {{ .Values.rasterCommon.storage.fs.gpkgsPvc.name }}
+      {{- end }}
       - name: nginx-downloads-config
         configMap:
           name: {{ template "file-download-server.fullname" . }}-configmap
@@ -69,9 +75,11 @@ spec:
               path: /nginx_status
               port: 8081
           volumeMounts:
+          {{- if .Values.rasterCommon.storage.fs.gpkgsPvc.enabled }}
             - name: gpkgs-storage
               mountPath: /usr/share/nginx/html/downloads 
-              subPath: gpkgs
+              subPath: {{ .Values.rasterCommon.storage.fs.gpkgsPvc.subPath }}
+          {{- end }}
             - mountPath: "/etc/nginx/conf.d/downloads.conf"
               name: nginx-downloads-config
               subPath: downloads.conf
