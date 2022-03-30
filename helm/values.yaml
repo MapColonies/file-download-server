@@ -18,12 +18,12 @@ cloudProvider:
 
 rasterCommon:
   storage:
+    gpkgProvider: FS
     fs:
       gpkgsPvc:
         enabled: true
         name: gpkgs-storage
         subPath: gpkgs
-  storageProvider: FS
 
 image:
   repository: file-download-server
