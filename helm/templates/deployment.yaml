@@ -46,10 +46,10 @@ spec:
         - name: {{ $cloudProviderImagePullSecretName | quote }}
     {{- end }}
       volumes:
-      {{- if .Values.rasterCommon.storage.fs.gpkgsPvc.enabled }}
+      {{- if .Values.rasterCommon.storage.fs.internalPvc.enabled }}
       - name: gpkgs-storage
         persistentVolumeClaim:
-          claimName: {{ .Values.rasterCommon.storage.fs.gpkgsPvc.name }}
+          claimName: {{ .Values.rasterCommon.storage.fs.internalPvc.name }}
       {{- end }}
       - name: nginx-downloads-config
         configMap:
@@ -75,10 +75,10 @@ spec:
               path: /nginx_status
               port: 8081
           volumeMounts:
-          {{- if .Values.rasterCommon.storage.fs.gpkgsPvc.enabled }}
+          {{- if .Values.rasterCommon.storage.fs.internalPvc.enabled }}
             - name: gpkgs-storage
               mountPath: /usr/share/nginx/html/downloads 
-              subPath: {{ .Values.rasterCommon.storage.fs.gpkgsPvc.subPath }}
+              subPath: {{ .Values.rasterCommon.storage.fs.internalPvc.gpkgSubPath }}
           {{- end }}
             - mountPath: "/etc/nginx/conf.d/downloads.conf"
               name: nginx-downloads-config
