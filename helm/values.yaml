@@ -20,13 +20,13 @@ rasterCommon:
   storage:
     gpkgProvider: FS
     fs:
-      gpkgsPvc:
+      internalPvc:
         enabled: true
         name: gpkgs-storage
-        subPath: gpkgs
+        gpkgSubPath: gpkgs
 
 image:
-  repository: file-download-server
+  repository: files-server
   tag: latest
 
 env:

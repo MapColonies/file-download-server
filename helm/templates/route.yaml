@@ -1,6 +1,6 @@
 {{- $releaseName := .Release.Name -}}
-{{- $chartName := include "file-download-server.name" . -}}
-{{- $cloudProviderFlavor := include "file-download-server.cloudProviderFlavor" . -}}
+{{- $chartName := include "files-server.name" . -}}
+{{- $cloudProviderFlavor := include "files-server.cloudProviderFlavor" . -}}
 {{- if and (and (.Values.enabled) (eq $cloudProviderFlavor "openshift")) (.Values.route.enabled) -}}
 apiVersion: route.openshift.io/v1
 kind: Route

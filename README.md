@@ -1,4 +1,4 @@
-# file-download-server
+# files-server
 static downloads server
 
 ### setup:
