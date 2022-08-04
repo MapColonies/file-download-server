@@ -7,7 +7,6 @@
 {{- $imageTag := include "files-server.tag" . -}}
 {{- $tracingUrl := include "files-server.tracingUrl" . -}}
 
-
 {{- if .Values.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
@@ -39,25 +38,15 @@ spec:
       {{- if .Values.resetOnConfigChange }}
       annotations:
         checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/envoy-configmap: {{ include (print $.Template.BasePath "/envoy-configmap.yaml") . | sha256sum }}
       {{- end }}        
     spec:
     {{- if $cloudProviderImagePullSecretName }}
       imagePullSecrets:
         - name: {{ $cloudProviderImagePullSecretName | quote }}
     {{- end }}
-      volumes:
-      {{- if .Values.rasterCommon.storage.fs.internalPvc.enabled }}
-      - name: gpkgs-storage
-        persistentVolumeClaim:
-          claimName: {{ .Values.rasterCommon.storage.fs.internalPvc.name }}
-      {{- end }}
-      - name: nginx-downloads-config
-        configMap:
-          name: {{ template "files-server.fullname" . }}-configmap
-          items:
-          - key: "NGINX_DOWNLOADS_CONFIG"
-            path: "downloads.conf"
       containers:
+      ### file downloader container ###
         - name: {{ $releaseName }}-{{ $chartName }}-deployment
           {{- with .Values.image }}
           image: {{ $cloudProviderDockerRegistryUrl }}{{ .repository }}:{{ $imageTag }}
@@ -66,7 +55,7 @@ spec:
               value: {{ $tracingUrl }}
           {{- end }}
           ports:
-            - name: http
+            - name: external
               containerPort: {{ .Values.env.targetPort }}
               protocol: {{ .Values.env.protocol }}
           livenessProbe:
@@ -88,5 +77,78 @@ spec:
           resources:
             {{- toYaml .Values.resources.value | nindent 12 }}
           {{- end }}
+        {{- if .Values.rasterCommon.authentication.opa.enabled }}
+        ### envoy & opa containers
+        - name: envoy
+          image: "{{ .Values.envoy.image }}:{{ .Values.envoy.imageTag }}"
+          volumeMounts:
+          - readOnly: true
+            mountPath: /config
+            name: proxy-config
+          args:
+          - "envoy"
+          - "--config-path"
+          - "/config/envoy.yaml"
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          {{- if .Values.envoy.resources.enabled }}
+          resources:
+            {{- toYaml .Values.envoy.resources.value | nindent 12 }}
+          {{- end }}
+        - name: opa
+          image: "{{ .Values.opa.image }}:{{ .Values.opa.imageTag }}"
+          volumeMounts:
+          - readOnly: true
+            mountPath: /policy
+            name: opa-policy
+          args:
+          - "run"
+          - "--server"
+          - "--addr=0.0.0.0:8181"
+          - "--diagnostic-addr=0.0.0.0:8282"
+          - "--set=plugins.envoy_ext_authz_grpc.add=:{{ .Values.opa.imageTag }}"
+          - "--set=plugins.envoy_ext_authz_grpc.path=envoy/authz/allow"
+          {{- if .Values.opa.enableLogging }}
+          - "--set=decision_logs.console=true"
+          {{- end }}
+          - "/policy/policy.rego"
+          {{- if .Values.opa.resources.enabled }}
+          resources:
+            {{- toYaml .Values.opa.resources.value | nindent 12 }}
+          {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /health?plugins
+              port: 8282
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health?plugins
+              port: 8282
+            initialDelaySeconds: 5
+            periodSeconds: 30
+        {{- end }}
+      volumes:
+        {{- if .Values.rasterCommon.storage.fs.internalPvc.enabled }}
+        - name: gpkgs-storage
+          persistentVolumeClaim:
+            claimName: {{ .Values.rasterCommon.storage.fs.internalPvc.name }}
+        {{- end }}
+        - name: nginx-downloads-config
+          configMap:
+            name: {{ template "files-server.fullname" . }}-configmap
+            items:
+            - key: "NGINX_DOWNLOADS_CONFIG"
+              path: "downloads.conf"
+        {{- if .Values.rasterCommon.authentication.opa.enabled }}
+        - name: opa-policy
+          secret:
+            secretName: {{ .Release.Name }}-{{ $chartName }}-opa
+        - name: proxy-config
+          configMap:
+            name: {{ .Release.Name }}-{{ $chartName }}-envoy
+        {{- end }}
 {{- end -}}
-
