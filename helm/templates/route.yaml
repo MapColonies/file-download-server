@@ -10,6 +10,8 @@ metadata:
     haproxy.router.openshift.io/rewrite-target: /
 spec:
   path:  {{ .Values.route.path | default "/" }}
+  port:
+    targetPort: external
   to:
     kind: Service
     name: {{ $releaseName }}-{{ $chartName }}
