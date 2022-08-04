@@ -26,7 +26,7 @@ rasterCommon:
         gpkgSubPath: gpkgs
   authentication:
     opa:
-      enabled: false
+      enabled: true
       customHeaderName: "x-api-key"
 
 image:
