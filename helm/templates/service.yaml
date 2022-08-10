@@ -26,7 +26,7 @@ spec:
     - port: {{ .Values.env.externalPort }}
       targetPort: {{ $targetPort }}
       protocol: TCP
-      name: extrenal
+      name: external
     {{- end }}
       {{- if eq $cloudProviderFlavor "minikube" }}
       nodePort: {{ .Values.nodePort}}
