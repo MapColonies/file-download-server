@@ -2,6 +2,7 @@
 {{- $chartName := include "files-server.name" . -}}
 {{- $cloudProviderFlavor := include "files-server.cloudProviderFlavor" . -}}
 {{- if and (and (.Values.enabled) (eq $cloudProviderFlavor "openshift")) (.Values.route.enabled) -}}
+{{ $targetPort := ternary "external" "internal" .Values.rasterCommon.authentication.opa.enabled }}
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
@@ -12,7 +13,7 @@ spec:
   path:  {{ .Values.route.path | default "/" }}
   {{- if .Values.rasterCommon.authentication.opa.enabled }}
   port:
-    targetPort: external
+    targetPort: {{ $targetPort }}
   {{- end }}
   to:
     kind: Service
