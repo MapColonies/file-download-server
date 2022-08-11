@@ -23,8 +23,8 @@ spec:
       protocol: TCP
       name: internal
     {{- if .Values.rasterCommon.authentication.opa.enabled }}
-    - port: {{ .Values.envoy.port }}
-      targetPort: {{ $targetPort }}
+    - port: {{ .Values.env.externalPort }}
+      targetPort: {{ .Values.envoy.port }}
       protocol: TCP
       name: external
     {{- end }}
