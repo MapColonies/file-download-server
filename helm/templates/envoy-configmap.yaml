@@ -1,4 +1,4 @@
-{{- if .Values.rasterCommon.authentication.opaFileDownloader.enabled }}
+{{- if .Values.rasterCommon.authentication.opaExporterFileDownloader.enabled }}
 {{- $chartName := include "files-server.name" . -}}
 kind: ConfigMap
 apiVersion: v1
