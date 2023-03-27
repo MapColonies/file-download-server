@@ -27,9 +27,13 @@ rasterCommon:
         name: gpkgs-storage
         gpkgSubPath: gpkgs
   authentication:
-    opa:
+    opa: # global opa values configuration - on this deployment not in use - todo - update after global export solution
       enabled: true
       customHeaderName: "x-api-key"
+    opaFileDownloader: # separate opa values configuration
+      enabled: true
+      customHeaderName: "x-api-key"
+      resourceType: raster
 
 image:
   repository: files-server
