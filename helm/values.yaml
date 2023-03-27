@@ -28,7 +28,7 @@ rasterCommon:
         gpkgSubPath: gpkgs
   authentication:
     opaExporterFileDownloader:
-      enabled: true
+      enabled: false
       customHeaderName: "x-api-key"
       resourceType: raster
 
