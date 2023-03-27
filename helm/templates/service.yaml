@@ -22,7 +22,7 @@ spec:
       targetPort: {{ .Values.env.targetPort }}
       protocol: TCP
       name: internal
-    {{- if .Values.rasterCommon.authentication.opa.enabled }}
+    {{- if .Values.rasterCommon.authentication.opaExporterFileDownloader.enabled }}
     - port: {{ .Values.env.externalPort }}
       targetPort: {{ .Values.envoy.port }}
       protocol: TCP

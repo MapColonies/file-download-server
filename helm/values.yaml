@@ -27,9 +27,10 @@ rasterCommon:
         name: gpkgs-storage
         gpkgSubPath: gpkgs
   authentication:
-    opa:
-      enabled: true
+    opaExporterFileDownloader:
+      enabled: false
       customHeaderName: "x-api-key"
+      resourceType: raster
 
 image:
   repository: files-server

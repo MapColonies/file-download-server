@@ -2,7 +2,7 @@
 {{- $chartName := include "files-server.name" . -}}
 {{- $cloudProviderFlavor := include "files-server.cloudProviderFlavor" . -}}
 {{- if and (and (.Values.enabled) (eq $cloudProviderFlavor "openshift")) (.Values.route.enabled) -}}
-{{ $targetPort := ternary "external" "internal" .Values.rasterCommon.authentication.opa.enabled }}
+{{ $targetPort := ternary "external" "internal" .Values.rasterCommon.authentication.opaExporterFileDownloader.enabled }}
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
