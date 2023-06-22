@@ -73,6 +73,10 @@ spec:
               name: nginx-downloads-config
               subPath: downloads.conf
               readOnly: true
+            - mountPath: "/etc/nginx/nginx.conf"
+              name: nginx-root-config
+              subPath: nginx.conf
+              readOnly: true
           {{- if .Values.resources.enabled }}
           resources:
             {{- toYaml .Values.resources.value | nindent 12 }}
@@ -147,6 +151,12 @@ spec:
             items:
             - key: "NGINX_DOWNLOADS_CONFIG"
               path: "downloads.conf"
+        - name: nginx-root-config
+          configMap:
+            name: {{ template "files-server.fullname" . }}-configmap
+            items:
+            - key: "NGINX_ROOT_CONFIG"
+              path: "nginx.conf"
         {{- if .Values.rasterCommon.authentication.opaExporterFileDownloader.enabled }}
         - name: opa-policy
           secret:
