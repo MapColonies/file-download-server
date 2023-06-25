@@ -11,8 +11,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  {{- if .Values.splunkIndex }} # in case of futrure more annoatation, change the condition of splunk
   annotations:
     collectord.io/index: {{ quote .Values.splunkIndex }}
+    collectord.io/output: splunk
+  {{- end }}
   name: {{ $releaseName }}-{{ $chartName }}
   labels:
     app: {{ $chartName }}
