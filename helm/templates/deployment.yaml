@@ -11,8 +11,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  {{- if .Values.splunkIndex }} # in case of futrure more annoatation, change the condition of splunk
   annotations:
     collectord.io/index: {{ quote .Values.splunkIndex }}
+    collectord.io/output: splunk
+  {{- end }}
   name: {{ $releaseName }}-{{ $chartName }}
   labels:
     app: {{ $chartName }}
@@ -72,6 +75,10 @@ spec:
             - mountPath: "/etc/nginx/conf.d/downloads.conf"
               name: nginx-downloads-config
               subPath: downloads.conf
+              readOnly: true
+            - mountPath: "/etc/nginx/nginx.conf"
+              name: nginx-root-config
+              subPath: nginx.conf
               readOnly: true
           {{- if .Values.resources.enabled }}
           resources:
@@ -147,6 +154,12 @@ spec:
             items:
             - key: "NGINX_DOWNLOADS_CONFIG"
               path: "downloads.conf"
+        - name: nginx-root-config
+          configMap:
+            name: {{ template "files-server.fullname" . }}-configmap
+            items:
+            - key: "NGINX_ROOT_CONFIG"
+              path: "nginx.conf"
         {{- if .Values.rasterCommon.authentication.opaExporterFileDownloader.enabled }}
         - name: opa-policy
           secret:
