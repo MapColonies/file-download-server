@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "files-server.fullname" . }}-configmap
+  name: {{ .Release.Name }}-configmap
   labels:
     app: {{ template "files-server.name" . }}
     component: files-server-configmap
