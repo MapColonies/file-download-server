@@ -1,12 +1,13 @@
 {{- $releaseName := .Release.Name -}}
 {{- $chartName := include "files-server.name" . -}}
 {{- $cloudProviderFlavor := include "files-server.cloudProviderFlavor" . -}}
+{{- $serviceName := include "service.fullname" . -}}
 {{- if and (and (.Values.enabled) (eq $cloudProviderFlavor "openshift")) (.Values.route.enabled) -}}
 {{ $targetPort := ternary "external" "internal" .Values.rasterCommon.authentication.opaExporterFileDownloader.enabled }}
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: {{ $releaseName }}-{{ $chartName }}-route
+  name: {{ $releaseName }}-route
   annotations:
     haproxy.router.openshift.io/rewrite-target: /
     {{- if .Values.route.timeout.enabled }}
@@ -21,7 +22,7 @@ spec:
     targetPort: {{ $targetPort }}
   to:
     kind: Service
-    name: {{ $releaseName }}-{{ $chartName }}
+    name: {{ $serviceName }}
   {{- if .Values.route.tls }}
   tls:
     termination: edge
