@@ -4,7 +4,16 @@ global:
   metrics: {}
   environment: {}
   authentication:
+    opa:
+      enabled: false
+      customHeaderName: "x-api-key"
     jwtPublicKeySecretName: map-colonies-jwks
+  storage:
+    fs:
+      internalPvc:
+        enabled: false
+        name: ""
+        gpkgSubPath: ""
 
 enabled: true
 environment: development
@@ -18,19 +27,16 @@ cloudProvider:
   imagePullSecretName: pullSecretName
   flavor: openshift
 
-rasterCommon:
-  storage:
-    gpkgProvider: FS
-    fs:
-      internalPvc:
-        enabled: true
-        name: gpkgs-storage
-        gpkgSubPath: gpkgs
-  authentication:
-    opaExporterFileDownloader:
+storage:
+  fs:
+    internalPvc:
       enabled: false
-      customHeaderName: "x-api-key"
-      resourceType: raster
+      name: ""
+      gpkgSubPath: ""
+authentication:
+  opa:
+    enabled: false
+    customHeaderName: ""
 
 image:
   repository: files-server

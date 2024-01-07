@@ -1,8 +1,9 @@
 {{- if .Values.enabled -}}
+{{- $configmapName := include "configmap.fullname" . }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Release.Name }}-configmap
+  name: {{ $configmapName }}
   labels:
     app: {{ template "files-server.name" . }}
     component: files-server-configmap
