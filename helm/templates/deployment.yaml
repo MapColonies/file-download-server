@@ -41,11 +41,15 @@ spec:
         release: {{ $releaseName }}
         run: {{ $releaseName }}-{{ $chartName }}
         {{- include "files-server.selectorLabels" . | nindent 8 }}
-      {{- if .Values.resetOnConfigChange }}
       annotations:
+        {{- if .Values.resetOnConfigChange }}
         checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/envoy-configmap: {{ include (print $.Template.BasePath "/envoy-configmap.yaml") . | sha256sum }}
-      {{- end }}        
+        {{- end }}
+        {{- if .Values.podAnnotations }}
+        {{- toYaml .Values.podAnnotations | nindent 8 }}
+        {{- end }}
+
     spec:
     {{- if $cloudProviderImagePullSecretName }}
       imagePullSecrets:

@@ -42,6 +42,13 @@ image:
   repository: files-server
   tag: latest
 
+# add pod annotations
+# example:
+# podAnnotations:
+  # annotation1: annotation-value-1
+  # annotation2: annotation-value-2
+podAnnotations: {}
+
 opa:
   image: openpolicyagent/opa
   imageTag: 0.29.4-envoy-3
