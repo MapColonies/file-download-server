@@ -2,9 +2,18 @@ global:
   cloudProvider: {}
   tracing: {}
   metrics: {}
-  environment: {}
+  environment: ""
   authentication:
+    opa:
+      enabled: false
+      customHeaderName: "x-api-key"
     jwtPublicKeySecretName: map-colonies-jwks
+  storage:
+    fs:
+      internalPvc:
+        enabled: false
+        name: ""
+        gpkgSubPath: ""
 
 enabled: true
 environment: development
@@ -13,28 +22,33 @@ initialDelaySeconds: 30
 nodePort: 30030 #for minikube deployment only
 resetOnConfigChange: true
 splunkIndex: ""
+
 cloudProvider:
   dockerRegistryUrl: my-registry-url.io
   imagePullSecretName: pullSecretName
   flavor: openshift
 
-rasterCommon:
-  storage:
-    gpkgProvider: FS
-    fs:
-      internalPvc:
-        enabled: true
-        name: gpkgs-storage
-        gpkgSubPath: gpkgs
-  authentication:
-    opaExporterFileDownloader:
+storage:
+  fs:
+    internalPvc:
       enabled: false
-      customHeaderName: "x-api-key"
-      resourceType: raster
+      name: ""
+      gpkgSubPath: ""
+authentication:
+  opa:
+    enabled: false
+    customHeaderName: ""
 
 image:
   repository: files-server
   tag: latest
+
+# add pod annotations
+# example:
+# podAnnotations:
+  # annotation1: annotation-value-1
+  # annotation2: annotation-value-2
+podAnnotations: {}
 
 opa:
   image: openpolicyagent/opa
@@ -73,6 +87,7 @@ env:
   protocol: TCP
   tracing:
     url: http://localhost:55681/v1/trace
+    
 resources:
   enabled: true
   value:

@@ -1,11 +1,13 @@
 
 {{- $releaseName := .Release.Name -}}
 {{- $chartName := include "files-server.name" . -}}
+{{- $deploymentName := include "deployment.fullname" . }}
 {{- $cloudProviderFlavor := include "files-server.cloudProviderFlavor" . -}}
 {{- $cloudProviderDockerRegistryUrl := include "files-server.cloudProviderDockerRegistryUrl" . -}}
 {{- $cloudProviderImagePullSecretName := include "files-server.cloudProviderImagePullSecretName" . -}}
 {{- $imageTag := include "files-server.tag" . -}}
 {{- $tracingUrl := include "files-server.tracingUrl" . -}}
+{{- $fs := (include "common.fs.merged" .) | fromYaml }}
 
 {{- if .Values.enabled -}}
 apiVersion: apps/v1
@@ -16,7 +18,7 @@ metadata:
     collectord.io/index: {{ quote .Values.splunkIndex }}
     collectord.io/output: splunk
   {{- end }}
-  name: {{ $releaseName }}-deployment
+  name: {{ $deploymentName }}
   labels:
     app: {{ $chartName }}
     component: {{ $chartName }}
@@ -38,11 +40,15 @@ spec:
         release: {{ $releaseName }}
         run: {{ $releaseName }}-{{ $chartName }}
         {{- include "files-server.selectorLabels" . | nindent 8 }}
-      {{- if .Values.resetOnConfigChange }}
       annotations:
+        {{- if .Values.resetOnConfigChange }}
         checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/envoy-configmap: {{ include (print $.Template.BasePath "/envoy-configmap.yaml") . | sha256sum }}
-      {{- end }}        
+        {{- end }}
+        {{- if .Values.podAnnotations }}
+        {{- toYaml .Values.podAnnotations | nindent 8 }}
+        {{- end }}
+
     spec:
     {{- if $cloudProviderImagePullSecretName }}
       imagePullSecrets:
@@ -50,7 +56,7 @@ spec:
     {{- end }}
       containers:
       ### file downloader container ###
-        - name: {{ $releaseName }}
+        - name: {{ $chartName }}
           {{- with .Values.image }}
           image: {{ $cloudProviderDockerRegistryUrl }}{{ .repository }}:{{ $imageTag }}
           env:
@@ -67,10 +73,10 @@ spec:
               path: /nginx_status
               port: 8081
           volumeMounts:
-          {{- if .Values.rasterCommon.storage.fs.internalPvc.enabled }}
+          {{- if $fs.internalPvc.enabled }}
             - name: gpkgs-storage
               mountPath: /usr/share/nginx/html/downloads 
-              subPath: {{ .Values.rasterCommon.storage.fs.internalPvc.gpkgSubPath }}
+              subPath: {{ $fs.internalPvc.gpkgSubPath }}
           {{- end }}
             - mountPath: "/etc/nginx/conf.d/downloads.conf"
               name: nginx-downloads-config
@@ -84,7 +90,7 @@ spec:
           resources:
             {{- toYaml .Values.resources.value | nindent 12 }}
           {{- end }}
-        {{- if .Values.rasterCommon.authentication.opaExporterFileDownloader.enabled }}
+        {{- if .Values.global.authentication.opa.enabled }}
         ### envoy & opa containers
         - name: envoy
           image: "{{ .Values.envoy.image }}:{{ .Values.envoy.imageTag }}"
@@ -143,10 +149,10 @@ spec:
             periodSeconds: 30
         {{- end }}
       volumes:
-        {{- if .Values.rasterCommon.storage.fs.internalPvc.enabled }}
+        {{- if $fs.internalPvc.enabled }}
         - name: gpkgs-storage
           persistentVolumeClaim:
-            claimName: {{ .Values.rasterCommon.storage.fs.internalPvc.name }}
+            claimName: {{ $fs.internalPvc.name }}
         {{- end }}
         - name: nginx-downloads-config
           configMap:
@@ -160,7 +166,7 @@ spec:
             items:
             - key: "NGINX_ROOT_CONFIG"
               path: "nginx.conf"
-        {{- if .Values.rasterCommon.authentication.opaExporterFileDownloader.enabled }}
+        {{- if .Values.global.authentication.opa.enabled }}
         - name: opa-policy
           secret:
             secretName: {{ .Release.Name }}-{{ $chartName }}-opa
