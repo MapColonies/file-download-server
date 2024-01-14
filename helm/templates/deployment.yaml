@@ -9,7 +9,6 @@
 {{- $tracingUrl := include "files-server.tracingUrl" . -}}
 {{- $fs := (include "common.fs.merged" .) | fromYaml }}
 
-
 {{- if .Values.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
