@@ -8,6 +8,7 @@
 {{- $imageTag := include "files-server.tag" . -}}
 {{- $tracingUrl := include "files-server.tracingUrl" . -}}
 {{- $fs := (include "common.fs.merged" .) | fromYaml }}
+{{- $configmapName := include "configmap.fullname" . }}
 
 {{- if .Values.enabled -}}
 apiVersion: apps/v1
@@ -156,13 +157,13 @@ spec:
         {{- end }}
         - name: nginx-downloads-config
           configMap:
-            name: {{ template "files-server.fullname" . }}-configmap
+            name: {{ $configmapName }}
             items:
             - key: "NGINX_DOWNLOADS_CONFIG"
               path: "downloads.conf"
         - name: nginx-root-config
           configMap:
-            name: {{ template "files-server.fullname" . }}-configmap
+            name:  {{ $configmapName }}
             items:
             - key: "NGINX_ROOT_CONFIG"
               path: "nginx.conf"
@@ -172,7 +173,7 @@ spec:
             secretName: {{ .Release.Name }}-{{ $chartName }}-opa
         - name: proxy-config
           configMap:
-            name: {{ .Release.Name }}-{{ $chartName }}-envoy
+            name:  {{ $configmapName }}-envoy
         - name: jwt-public-keys
           secret:
             secretName: {{ .Values.global.authentication.jwtPublicKeySecretName }}
