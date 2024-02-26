@@ -14,6 +14,8 @@ global:
         enabled: false
         name: ""
         gpkgSubPath: ""
+  ingress:
+    domain: "example.com"      
 
 enabled: true
 environment: development
@@ -112,7 +114,7 @@ ingress:
   enabled: false
   type: 'nginx-org' # supported values: 'nginx-org' | 'nginx-kubernetes
   path: /api/raster/v1
-  host: 'localhost'
+  host: ''
   tls: 
       enabled: true
       useExternal: ''

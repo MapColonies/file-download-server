@@ -2,6 +2,7 @@
 {{- $chartName := include "files-server.name" . -}}
 {{- $ingressName := include "ingress.fullname" . -}}
 {{- $serviceName := include "service.fullname" . -}}
+{{- $ingressHost := include "files-server.ingress.host" . }}
 {{- if and (.Values.enabled) (.Values.ingress.enabled) -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -43,5 +44,5 @@ spec:
             name: {{ $serviceName }}
             port:
               number: {{ .Values.env.port }}
-    host: {{ .Values.ingress.host | quote }}
+    host: {{ $ingressHost }}
 {{- end -}}
