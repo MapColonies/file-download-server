@@ -1,0 +1,17 @@
+{{- if .Values.nginx.enabled -}}
+{{- $chartName := include "files-server.name" . -}}
+{{- $releaseName := .Release.Name -}}
+{{- $nginxConfigmapName := include "nginx-configmap.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $nginxConfigmapName }}
+  labels:
+    app: {{ $releaseName }}-{{ $chartName }}
+    component: nginx-configmap
+    environment: {{ .Values.environment }}
+    release: {{ $releaseName }}
+data:
+  downloads.conf: {{ tpl (.Files.Get "config/downloads.conf") . | quote }}
+  nginx.conf: {{ tpl (.Files.Get "config/nginx.conf") . | quote }}
+{{- end }}
