@@ -53,15 +53,6 @@ env:
   tracing:
     url: http://localhost:55681/v1/trace
 
-resources:
-  enabled: true
-  value:
-    limits:
-      cpu: 100m
-      memory: 128Mi
-    requests:
-      cpu: 100m
-      memory: 128M
 
 nginx:
   enabled: true
@@ -120,7 +111,7 @@ nginx:
       key: ""
       caCertificate: ""
   ingress:
-    enabled: true
+    enabled: false
     type: "nginx-org" # supported values: 'nginx-org' | 'nginx-kubernetes
     path: /
     host: ""
