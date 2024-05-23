@@ -41,8 +41,8 @@ authentication:
 # add pod annotations
 # example:
 # podAnnotations:
-  # annotation1: annotation-value-1
-  # annotation2: annotation-value-2
+# annotation1: annotation-value-1
+# annotation2: annotation-value-2
 podAnnotations: {}
 
 env:
@@ -52,7 +52,6 @@ env:
   protocol: TCP
   tracing:
     url: http://localhost:55681/v1/trace
-
 
 nginx:
   enabled: true
@@ -99,8 +98,9 @@ nginx:
 
   route:
     enabled: false
-    path: /
-    host:
+    routesMapping:
+      - path: /
+        host:
     timeout:
       enabled: false # defaults to 30s by openshift
       duration: 60s # supported units (us, ms, s, m, h, d)
