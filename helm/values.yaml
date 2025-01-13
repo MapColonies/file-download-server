@@ -3,9 +3,11 @@ global:
   tracing: {}
   metrics: {}
   environment: ""
+  serviceUrls: {}
   authentication:
     jwtPublicKeySecretName: map-colonies-jwks
   storage:
+    gpkgProvider: ""
     fs:
       internalPvc:
         enabled: false
@@ -27,7 +29,11 @@ cloudProvider:
   imagePullSecretName: pullSecretName
   flavor: openshift
 
+serviceUrls:
+  ngnixS3Gateway: ""
+
 storage:
+  gpkgProvider: ""
   fs:
     internalPvc:
       enabled: false
@@ -76,9 +82,6 @@ nginx:
         claimName: "internal-pvc-nfs"
 
   extraVolumeMounts:
-    - name: nginx-config
-      mountPath: "/etc/nginx/conf.d/downloads.conf"
-      subPath: downloads.conf
     - mountPath: "/etc/nginx/nginx.conf"
       name: nginx-config
       subPath: nginx.conf
