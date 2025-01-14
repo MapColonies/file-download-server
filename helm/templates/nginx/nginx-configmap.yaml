@@ -12,6 +12,5 @@ metadata:
     environment: {{ .Values.environment }}
     release: {{ $releaseName }}
 data:
-  downloads.conf: {{ tpl (.Files.Get "config/downloads.conf") . | quote }}
   nginx.conf: {{ tpl (.Files.Get "config/nginx.conf") . | quote }}
 {{- end }}
