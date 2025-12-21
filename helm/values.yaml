@@ -15,6 +15,17 @@ global:
         gpkgSubPath: ""
   ingress:
     domain: "example.com"
+    
+mclabels:
+  #environment: development
+  component: backend
+  partOf: export
+  owner: raster
+  gisDomain: raster
+  prometheus:
+    enabled: true
+    port: 9117
+  longScraping: true
 
 enabled: true
 environment: development
