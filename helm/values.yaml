@@ -25,7 +25,6 @@ mclabels:
   prometheus:
     enabled: true
     port: 9117
-  longScraping: true
 
 enabled: true
 environment: development
