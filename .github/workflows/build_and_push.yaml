@@ -5,22 +5,34 @@ on:
     tags:
       - "v*"
 
-  workflow_dispatch:
-    inputs:
-      version:
-        description: "Version to tag the helm chart with"
-        required: true
-        type: string
-env:
-  HELM_EXPERIMENTAL_OCI: 1
-
 permissions:
   contents: write
   pull-requests: write
 
 jobs:
-  build_and_push_helm:
-    uses: MapColonies/shared-workflows/.github/workflows/build-and-push-helm.yaml@v5
-    secrets: inherit
-    with:
-      scope: raster
+  build-and-push:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to ACR
+        uses: MapColonies/artifactory-login@v1.0.0
+        with:
+          username: ${{ secrets.ACR_PUSH_USER }}
+          password: ${{ secrets.ACR_PUSH_TOKEN }}
+          registry: acrarolibotnonprod.azurecr.io
+
+      - name: Build and Push Helm Chart
+        uses: MapColonies/build-and-push-helm@v1.0.1
+        with:
+          domain: raster
+          project: ${{ github.repository }}
+          tag: ${{ github.ref_name }}
+          registry_url: acrarolibotnonprod.azurecr.io
+
+      - name: Update Artifacts File
+        uses: MapColonies/update-artifacts-file@v1.1.1
+        with:
+          domain: raster
+          project: ${{ github.repository }}
+          tag: ${{ github.ref_name }}

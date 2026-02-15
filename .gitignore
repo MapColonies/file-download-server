@@ -126,3 +126,6 @@ dist
 .pnp.*
 
 local.yaml
+
+# helm
+Chart.lock
