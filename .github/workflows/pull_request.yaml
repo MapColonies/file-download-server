@@ -7,9 +7,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: MapColonies/helm-lint@v1
-        with:
-          charts_dir: ./helm
+      - uses: azure/setup-helm@v4
+      - run: helm lint ./helm
 
   security:
     runs-on: ubuntu-24.04
