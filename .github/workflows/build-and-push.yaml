@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
 
       - name: Login to ACR
         uses: MapColonies/artifactory-login@v1.0.0
@@ -36,3 +38,4 @@ jobs:
           domain: raster
           project: ${{ github.repository }}
           tag: ${{ github.ref_name }}
+          github_token: ${{ secrets.GH_PAT }}
