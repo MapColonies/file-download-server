@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/MapColonies/file-download-server/compare/v2.2.0...v2.2.1) (2026-02-16)
+
+
+### Bug Fixes
+
+* add token to build workflow for private actions access (MAPCO-9842) ([#67](https://github.com/MapColonies/file-download-server/issues/67)) ([d9f34b9](https://github.com/MapColonies/file-download-server/commit/d9f34b96004a47362932a0dfa2768155e18fe5d0))
+
 ## [2.2.0](https://github.com/MapColonies/file-download-server/compare/v2.1.1...v2.2.0) (2026-02-16)
 
 
