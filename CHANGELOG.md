@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.2](https://github.com/MapColonies/file-download-server/compare/v2.2.1...v2.2.2) (2026-02-16)
+
+
+### Bug Fixes
+
+* upgraded build and push yaml (MAPCO-9842) ([#69](https://github.com/MapColonies/file-download-server/issues/69)) ([92903bf](https://github.com/MapColonies/file-download-server/commit/92903bf6fa2f21965fd96bf5716583dc29bdaa92))
+
 ## [2.2.1](https://github.com/MapColonies/file-download-server/compare/v2.2.0...v2.2.1) (2026-02-16)
 
 
