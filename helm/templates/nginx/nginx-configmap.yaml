@@ -7,10 +7,7 @@ kind: ConfigMap
 metadata:
   name: {{ $nginxConfigmapName }}
   labels:
-    app: {{ $releaseName }}-{{ $chartName }}
-    component: nginx-configmap
-    environment: {{ .Values.environment }}
-    release: {{ $releaseName }}
+{{ include "files-server.labels" . | indent 4 }}
 data:
   nginx.conf: {{ tpl (.Files.Get "config/nginx.conf") . | quote }}
 {{- end }}
