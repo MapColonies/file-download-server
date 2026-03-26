@@ -66,12 +66,22 @@ nginx:
     enabled: false
   replicaCount: 1
   image:
-    repository: nginx-otel-unprivileged
-    tag: "v1.0.0"
+    repository: common/nginx
+    tag: "v2.1.1"
   port: 8080
-  internalServicePort: 80
   targetPort: 8080
   nodePort: 30003
+
+  backend:
+    host: "127.0.0.1"
+    port: 8082
+
+  opentelemetry:
+    serviceName: ""
+    exporterHost: ""
+    exporterPort: 4317
+    samplerMethod: "AlwaysOff"
+    ratio: 10
 
   extraVolumes:
     - name: nginx-config
@@ -82,9 +92,9 @@ nginx:
         claimName: "internal-pvc-nfs"
 
   extraVolumeMounts:
-    - mountPath: "/etc/nginx/nginx.conf"
+    - mountPath: "/etc/nginx/conf.d/downloads.conf"
       name: nginx-config
-      subPath: nginx.conf
+      subPath: downloads.conf
     - name: gpkgs-storage
       mountPath: /usr/share/nginx/html/downloads
       subPath: gpkgs
@@ -115,12 +125,16 @@ nginx:
       caCertificate: ""
   ingress:
     enabled: false
-    type: "nginx-org" # supported values: 'nginx-org' | 'nginx-kubernetes
-    path: /
-    host: ""
+    ingressClassName: nginx
+    additionalAnnotations: {}
+    ingressMapping:
+      - path: /
+        host: ""
+        pathType: Prefix
+    domain: ""
     tls:
       enabled: false
-      useExternal: ""
+      secretName: ""
     cors:
       enabled: true
       origin: "*"
