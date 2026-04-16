@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.0](https://github.com/MapColonies/file-download-server/compare/v2.3.0...v2.4.0) (2026-04-16)
+
+
+### Features
+
+* update nginx version to 2.1.5 and enhance downloads configuration(MAPCO-10121) ([#75](https://github.com/MapColonies/file-download-server/issues/75)) ([d5c6ddf](https://github.com/MapColonies/file-download-server/commit/d5c6ddf09fbeab4c8eb0717e284ddb17ac0d4cb0))
+
 ## [2.3.0](https://github.com/MapColonies/file-download-server/compare/v2.2.2...v2.3.0) (2026-03-26)
 
 
