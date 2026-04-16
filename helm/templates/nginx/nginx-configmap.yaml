@@ -12,5 +12,5 @@ metadata:
     environment: {{ .Values.environment }}
     release: {{ $releaseName }}
 data:
-  downloads.conf: {{ tpl (.Files.Get "config/downloads.conf") . | quote }}
+  downloads-location.conf: {{ tpl (.Files.Get "config/downloads-location.conf") . | quote }}
 {{- end }}
