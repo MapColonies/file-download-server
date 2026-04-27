@@ -124,9 +124,9 @@ nginx:
     - name: nginx-config
       mountPath: "/etc/nginx/conf.d/extensions/downloads-location.conf"
       subPath: downloads-location.conf
-    - name: gpkgs-storage
-      mountPath: /usr/share/nginx/html/downloads
-      subPath: gpkgs
+    - name: artifacts-storage
+      mountPath: /usr/share/nginx/html/downloads/
+      subPath: raster/artifacts
 
   resources:
     enabled: true
