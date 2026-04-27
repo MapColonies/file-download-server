@@ -2,8 +2,8 @@ apiVersion: v2
 name: files-server
 description: A Helm chart for files-server
 type: application
-version: 2.4.0
-appVersion: 2.4.0
+version: 2.5.0
+appVersion: 2.5.0
 dependencies:
   - name: nginx
     version: 2.1.5
