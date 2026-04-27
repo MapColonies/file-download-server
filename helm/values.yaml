@@ -121,8 +121,9 @@ nginx:
         claimName: "internal-pvc-nfs"
 
   extraVolumeMounts:
-    - mountPath: "/etc/nginx/conf.d/extensions"
-      name: nginx-config
+    - name: nginx-config
+      mountPath: "/etc/nginx/conf.d/extensions/downloads-location.conf"
+      subPath: downloads-location.conf
     - name: gpkgs-storage
       mountPath: /usr/share/nginx/html/downloads
       subPath: gpkgs
