@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/MapColonies/file-download-server/compare/v2.4.0...v2.5.0) (2026-04-27)
+
+
+### Features
+
+* **helm:** update nginx volume mounts for downloads configuration ([#78](https://github.com/MapColonies/file-download-server/issues/78)) ([5802f71](https://github.com/MapColonies/file-download-server/commit/5802f71bface7395bdbfd239bc6955e7655c51e6))
+
 ## [2.4.0](https://github.com/MapColonies/file-download-server/compare/v2.3.0...v2.4.0) (2026-04-16)
 
 
