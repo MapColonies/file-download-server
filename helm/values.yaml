@@ -62,6 +62,7 @@ env:
 nginx:
   enabled: true
   fullnameOverride: ""
+  nameOverride: "files-server-nginx"
   nginx:
     extensions:
       location:
@@ -72,7 +73,7 @@ nginx:
   replicaCount: 1
   image:
     repository: common/nginx
-    tag: "v2.1.5"
+    tag: "v2.2.1"
   port: 8080
   targetPort: 8080
   nodePort: 30003
