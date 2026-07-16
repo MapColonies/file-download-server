@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.0](https://github.com/MapColonies/file-download-server/compare/v2.5.0...v2.6.0) (2026-07-16)
+
+
+### Features
+
+* **helm:** upgrade nginx chart dep and image to 2.2.1 ([#80](https://github.com/MapColonies/file-download-server/issues/80)) ([a1c9b71](https://github.com/MapColonies/file-download-server/commit/a1c9b71bc4a92c663cd822ec98e6b9b7e0736000))
+
 ## [2.5.0](https://github.com/MapColonies/file-download-server/compare/v2.4.0...v2.5.0) (2026-04-27)
 
 
