@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.1](https://github.com/MapColonies/file-download-server/compare/v2.6.0...v2.6.1) (2026-08-03)
+
+
+### Bug Fixes
+
+* **helm:** upgrade nginx chart to 2.3.1 and drop pinned image tag ([#82](https://github.com/MapColonies/file-download-server/issues/82)) ([1eae56e](https://github.com/MapColonies/file-download-server/commit/1eae56e068368e1d6f52e1edef63d5312c322443))
+
 ## [2.6.0](https://github.com/MapColonies/file-download-server/compare/v2.5.0...v2.6.0) (2026-07-16)
 
 
