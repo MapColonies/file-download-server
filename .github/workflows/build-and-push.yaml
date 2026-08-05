@@ -18,21 +18,21 @@ jobs:
           token: ${{ secrets.GH_PAT }}
 
       - name: Artifactory Login
-        uses: MapColonies/shared-workflows/actions/artifactory-login@artifactory-login-v1.0.0
+        uses: MapColonies/shared-workflows/actions/artifactory-login@artifactory-login-v1.0
         with:
           registry: ${{ secrets.ACR_URL }}
           username: ${{ secrets.ACR_PUSH_USER }}
           password: ${{ secrets.ACR_PUSH_TOKEN }}
 
       - name: Build and Push Helm Chart
-        uses: MapColonies/shared-workflows/actions/build-and-push-helm@build-and-push-helm-v1.0.1
+        uses: MapColonies/shared-workflows/actions/build-and-push-helm@artifactory-login-v1.0
         with:
           context: ./helm
           domain: raster
           registry: ${{ secrets.ACR_URL }}
 
       - name: Update Artifacts File- Helm
-        uses: MapColonies/shared-workflows/actions/update-artifacts-file@update-artifacts-file-v1.1.1
+        uses: MapColonies/shared-workflows/actions/update-artifacts-file@artifactory-login-v1.0
         with:
           domain: raster
           artifact_name: ${{ github.event.repository.name }}
